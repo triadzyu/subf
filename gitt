@@ -14,3 +14,4 @@
    git add .
    git commit -m "add all untracked files"
    git push
+   git push --set-upstream origin master
