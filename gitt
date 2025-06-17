@@ -1,0 +1,16 @@
+   git remote remove origin
+   git remote add origin https://github.com/triadzyu/subf.git
+   git config --global user.name "triadz"
+   git config --global user.email "triadzyu@gmail.com"
+   git config --global credential.helper store
+   
+   git init
+   echo "# subf" > README.md
+   git add README.md
+   git commit -m "first commits"
+   git branch -M master
+   git remote add origin https://github.com/triadzyu/subf.git
+
+   git add .
+   git commit -m "add all untracked files"
+   git push
