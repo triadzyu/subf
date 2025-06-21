@@ -157,8 +157,8 @@ git push
 git add build.sh
 git commit -m "add build.sh in HOME folder"
 git push
-
-
+git pull origin master
+git push origin master
 
 }
 
