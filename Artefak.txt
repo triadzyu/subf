@@ -1,0 +1,71 @@
+instal_nodejs_vps() {
+    apt update && apt upgrade -y
+    apt install binutils -y
+    apt install coreutils -y
+    apt install xz-utils -y
+    apt install -y nodejs npm
+    ln -s /usr/bin/nodejs /usr/bin/node
+    npm install -g bash-obfuscate
+    apt install cmdtest -y
+    apt install yarn -y
+    #cd "$PROJECT_DIR"
+    #echo "Install dependensi..."
+    #yarn install || npm install
+    #echo "Menjalankan project..."
+    #npm start
+}
+
+function dpkg_query(){
+    if [ $(dpkg-query -W -f='${Status}' shc 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+        echo belum terinstall shc, we will aquire them now. This may take a while.
+        read -p 'Press enter to continue.'
+        apt update && apt upgrade -y
+        apt install shc
+    elif [ $(dpkg-query -W -f='${Status}' nodejs 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
+        echo belum terinstall nodejs, we will aquire them now. This may take a while.
+        read -p 'Press enter to continue.'
+        instal_nodejs_vps
+    fi
+}
+
+function instalnpm(){
+PROJECT_DIR="$HOME/enc"
+REPO_URL="https://github.com/triadzyu/enc.git"
+
+if ! command -v node &> /dev/null; then
+    echo "Node.js belum terinstall, akan dipasang sekarang. Ini mungkin butuh waktu."
+    read -p "Tekan enter untuk melanjutkan..."
+    apt update && apt upgrade -y
+    apt install -y nodejs npm
+    npm install -g bash-obfuscate
+    apt install -y yarn
+    cd "$PROJECT_DIR"
+    echo "Install dependensi..."
+    yarn install || npm install
+    echo "Menjalankan project..."
+    npm start
+else
+    echo "Npm Node.js sudah terpasang. ✓"
+fi
+
+if [ ! -d "$PROJECT_DIR" ]; then
+    echo "Project belum ada, akan clone dari repo."
+    git clone "$REPO_URL" "$PROJECT_DIR"
+fi
+
+
+
+mkdir lib
+echo 'echo lib.so' > lib/lib.sh
+git add lib/lib.sh
+git commit -m "add lib.sh in lib folder"
+git push
+
+
+git add build.sh
+git commit -m "add build.sh in HOME folder"
+git push
+git pull origin master
+git push origin master
+
+}
